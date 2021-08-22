@@ -2,13 +2,14 @@ import torch
 from torch.utils.data import DataLoader, Dataset
 import torch.nn as nn
 import torch.nn.functional as F
+import pytorch_lightning as pl
 
 
-class AlexNet(nn.Module):
-    def __init__(self, num_classes=10):
+class AlexNet(pl.LightningModule):
+    def __init__(self, in_channels=1, num_classes=10):
         super(AlexNet, self).__init__()
         self.network = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
+            nn.Conv2d(in_channels, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
             nn.LocalResponseNorm(size=5, alpha=0.0001, beta=0.75, k=2),
             nn.MaxPool2d(kernel_size=3, stride=2),
